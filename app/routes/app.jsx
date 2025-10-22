@@ -63,7 +63,7 @@ export default function App() {
     <AppProvider isEmbeddedApp apiKey={apiKey}>
       <NavMenu>
         <Link to="/app" rel="home">
-          Redirection Management
+          Redirection
         </Link>
         <Link to="/app/FAQ">FAQ page</Link>
         <Link to="/app/contact">Contact Us</Link>
