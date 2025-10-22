@@ -30,7 +30,7 @@ export const loader = async ({ request }) => {
 
   const { billing, redirect, session } = await authenticate.admin(request);
 
-  const appHandle = "locallllgeomarket"; // Replace with your actual app handle from the App Store
+  const appHandle = "dev market local"; // Replace with your actual app handle from the App Store
 
   const { hasActivePayment } = await billing.check();
 
