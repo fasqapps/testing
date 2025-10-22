@@ -1,0 +1,72 @@
+<script src="{{ 'countryData.js' | asset_url }}" async></script>
+<script src="{{ 'auto_redirect.js' | asset_url }}?v={{ 'now' | date: '%s' }}" defer></script>
+
+
+<!-- Auto Redirect Configuration -->
+
+<style>
+.zowwARdisclosure-original {
+  
+  display: none !important;
+}
+
+/* Original styles (kept for reference but hidden) auto-redirect is working */
+
+
+/* Hide the form container as well */
+.zowwARdisclosure {
+  display: none !important;
+}
+</style>
+
+
+<input type="hidden" id="metafiledsforautoRedirect" name="metafiledsforautoRedirect" value="{{ shop.metafields.incovo.ztore_glob }}">
+<input type="hidden" id="preserveRelativePathSetting" name="preserveRelativePathSetting" value="{{ block.settings.preserve_relative_path }}">
+
+<!-- Localization Form -->
+
+  <localization-form>
+    {% form 'localization' %}
+      <div class="zowwARdisclosure">
+        <button type="button" class="zowwARdisclosure__button" aria-expanded="false" aria-controls="zowwARCountryList">
+          {{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})
+          <svg aria-hidden="true" focusable="false" role="presentation" class="zowwARicon zowwARicon-caret" viewBox="0 0 10 6">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+          </svg>
+        </button>
+        <ul id="zowwARCountryList" role="list" class="zowwARdisclosure__list" hidden>
+          {% for country in localization.available_countries %}
+            <li class="zowwARdisclosure__item" tabindex="-1">
+              <a href="#"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+                {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}" />
+      </div>
+    {% endform %}
+  </localization-form>
+
+
+{% schema %}
+  {
+    "name": "Auto Redirect",
+    "target": "body",
+    "class": "auto_redirect_zoww",
+    
+    "settings": [
+      {
+        "type": "header",
+        "content": "Auto Redirect Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "preserve_relative_path",
+        "label": "Preserve Relative Path",
+        "info": "When ON, visitors stay on the same page after redirect. When OFF, visitors go to homepage.",
+        "default": false
+      }
+    ]
+  }
+{% endschema %}

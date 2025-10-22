@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="{{ 'currencyConverter.css' | asset_url }}">
+<script src="{{ 'countryData.js' | asset_url }}" async></script>
+<script src="{{ 'Currency_Converter.js' | asset_url }}" async></script>
+
+<button id="custom-button" style="background-color: {{ block.settings.Currency_selector_Button_bg_color }};color:{{ block.settings.Currency_selector_Button_text_color }}">
+  <span id="currency-text">Click Me</span>
+  <span id="arrow-icon">▼</span>
+</button>
+<input
+  type="hidden"
+  id="currency_convertorid"
+  name="currency_convertor"
+  value="{{ shop.metafields.incovo.currencies }}"
+>
+<input
+  type="hidden"
+  id="auto_currency_changer_setting"
+  name="auto_currency_changer"
+  value="{{ block.settings.auto_currency_changer }}"
+>
+{% comment %} <span class="check_amount">{{ amount_with_comma_separator }}</span> {% endcomment %}
+<div id="currency-list" style="display: none; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 5px;background-color: {{ block.settings.Currency_selector_bg_color }};">
+    <ul style="color:{{ block.settings.Currency_selector_text_color }}" id="currency_content_list"></ul>
+</div>
+{% schema %}
+    {
+      "name": "Currency Converter",
+      "target": "body",
+      "class": "floating_popup",
+    
+      "settings": [
+        {
+      "type": "checkbox",
+      "id": "auto_currency_changer",
+      "label": "Auto Currency Changer",
+      "info": "Automatically detect and switch currency based on user's country",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "Currency_selector_Button_bg_color",
+      "label": "Currency Selector Button Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "Currency_selector_Button_text_color",
+      "label": "Currency Selector Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "Currency_selector_bg_color",
+      "label": "Currency Selector Dropdown Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "Currency_selector_text_color",
+      "label": "Currency Selector Dropdown Text Color",
+      "default": "#000000"
+    }
+      ]
+    }
+    {% endschema %}
+    

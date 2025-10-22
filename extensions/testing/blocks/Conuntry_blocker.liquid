@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="{{ 'Country_blocker.css' | asset_url }}">
+<script src="{{ 'Country_blocker.js' | asset_url }}" async></script>
+
+
+{% comment %} <input
+  type="hidden"
+  id="country_blocker"
+  name="country_blocker"
+  value="{{ shop.metafields.countryselector.selected-country }}"
+> {% endcomment %}
+
+
+<!-- Hidden element to store country codes -->
+<div id="blocked-countries" data-countries='["US","CA","AU"]'></div>
+
+
+<div id="blocker-div" style="display: none;">
+    <div id="blocker-content">
+      <h1>Your Country is Blocked</h1>
+    </div>
+  </div>    
+
+{% schema %}
+    {
+      "name": "Country Blocker",
+      "target": "body",
+      "class": "floating_popup",
+    
+      "settings": [
+      
+    
+      ]
+    }
+    {% endschema %}
+    

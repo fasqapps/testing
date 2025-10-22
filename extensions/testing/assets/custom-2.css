@@ -1,0 +1,201 @@
+.sa-popup-overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(255 255 255/0.6);
+    display: none;
+    z-index: 999999999;
+}
+
+.sa-popup {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.5rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1), -2px -2px 5px rgba(0, 0, 0, 0.1);
+    width: 32rem;
+    border-radius: 1rem;
+    text-align: left;
+    margin: auto;
+    top: 10%;
+    position: relative;
+
+}
+
+.sa-header-img-container {
+    width: 100%;
+    background-size: cover;
+    background-position-x: 25%;
+    background-repeat: no-repeat;
+    background-position-y: 100%;
+}
+
+.sa-main-container {
+    padding: 0px 15px 15px 15px;
+    font-family: "poppins";
+}
+
+.sa-market-modal-title {
+    margin-block-start: 1em;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.sa-market-modal-text {
+    margin-block: 1em;
+    font-size: 15px;
+}
+
+.sa-market-modal-footer {
+    text-align: left;
+}
+
+.saForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.saForm[disabled] {
+    pointer-events: none;
+}
+
+.saSelectLabel {
+    font-size: 13px;
+}
+
+.sa-selector-box {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.sa-selector-container {
+    margin: 0.6rem 0;
+    position: relative;
+    width: 50%;
+}
+
+.saSelectLabel {
+    font-size: 13px;
+    color: #6b6b6b;
+}
+
+.sa-selector-container:focus-within .saSelectLabel {
+    color: black;
+    transform: scale(1.2);
+    transition: transform 0.1s ease-in;
+}
+
+
+.saSelect {
+    padding: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    display: block;
+    margin: auto;
+    width: 100%;
+    appearance: none;
+    background-image: url(https://cdn.shopify.com/s/files/1/0055/9284/2330/files/arrow-down.svg?v=1657693258);
+    background-repeat: no-repeat;
+    background-position: 98% 50%;
+    background-size: 20px;
+    border-radius: 4px;
+    color: #787676;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    padding-right: 1.3rem;
+    text-overflow: ellipsis;
+}
+
+.sa-confirm-btn {
+    padding: 10px;
+    font-size: 16px;
+    margin: 1rem 0;
+    border-radius: 6px;
+    cursor: pointer;
+    border-width: 2px;
+    border-color: #238af7;
+    background-color: #238af7;
+    color: #fff;
+    border-style: solid;
+}
+
+.sa-confirm-btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+}
+
+.sa-confirm-btn svg {
+    width: 100%;
+    height: 15px;
+    fill: #fff !important;
+}
+
+.sa-confirm-btn-ico:after {
+    content: " \279C";
+    padding-left: 5px;
+}
+
+.saForm[disabled]>.sa-confirm-btn {
+    pointer-events: none;
+    opacity: 1;
+}
+
+.sa-modal-close-icon {
+    position: absolute;
+    top: -12px;
+    right: -8px;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    padding: 1px;
+    border-radius: 20px;
+    filter: invert(0);
+    opacity: 9.5;
+    padding: 2px 6px;
+    background-color: #fff;
+    box-shadow: 3px -3px 4px rgb(0 0 0 /15%), -2px 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+
+@media (min-width:320px) and (max-width:500px) {
+    .sa-popup {
+        width: 95% !important;
+        gap: 0 !important;
+    }
+
+    .sa-market-modal-title {
+        margin-block-start: 1em;
+        font-size: 16px;
+
+    }
+
+    .sa-market-modal-text {
+        font-size: 12px;
+    }
+
+    .sa-confirm-btn-content {
+        font-size: 12px;
+    }
+
+
+    .sa-confirm-btn {
+        margin: 0.5 rem 0rem;
+    }
+
+    .sa-selector-box {
+        flex-direction: column;
+        gap: 0rem;
+
+    }
+
+    .sa-selector-container {
+        margin: 0.1rem 0;
+        width: 100%;
+    }
+}

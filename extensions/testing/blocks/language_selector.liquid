@@ -1,0 +1,214 @@
+<style>
+.disclosure_only {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+.disclosure__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: #007BFF; */
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  border: none;
+  font-size: 16px;
+}
+
+.disclosure__list {
+  position: absolute;
+  bottom: 100%; /* Position the list above the button */
+  left: 0;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  display: none; /* Initially hidden */
+  width: 100%;
+  padding: 0; /* Remove default padding */
+  list-style: none; /* Remove bullets */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.disclosure__list[hidden] {
+  display: none;
+}
+
+.disclosure__list li {
+  margin: 0;
+  padding: 0;
+}
+
+.disclosure__list li a {
+  padding: 10px 15px;
+  display: block;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f1f1; /* Add a subtle separator */
+  border-radius: 4px;
+}
+
+.disclosure__list li a:hover {
+  background-color: #f1f1f1;
+}
+
+.disclosure__list li:last-child a {
+  border-bottom: none; /* Remove border from the last item */
+}
+
+/* Show list when aria-expanded is true */
+.disclosure__button[aria-expanded="true"] + .disclosure__list {
+  display: block;
+}
+</style>
+
+
+
+<localization-form class="lng_form_only">
+  {% form 'localization' %}
+    <div class="disclosure_only">
+      <button type="button" class="disclosure__button hello-button-container" aria-expanded="false" aria-controls="LanguageList"  style="background-color: {{ block.settings.Only_lng_background_Color }}">
+        <span  style="color: {{ block.settings.Only_lng_text_Color }}">{{ localization.language.endonym_name | capitalize }}</span>
+        
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+        </svg>
+      </button>
+
+      <ul id="LanguageList" role="list" class="disclosure__list" hidden style="background-color: {{ block.settings.only_lng_dropdown_background_color }};">
+        {% for language in localization.available_languages %}
+          <li class="onlyLanguageSelctorChoice" tabindex="-1" data-value="{{ language.iso_code }}">
+            <a href="#" {% if language.iso_code == localization.language.iso_code %} aria-current="true"{% endif %} hreflang="{{ language.iso_code }}" lang="{{ language.iso_code }}" data-value="{{ language.iso_code }}" style="color: {{ block.settings.only_lng_dropdown_text_color }}">
+              {{ language.endonym_name | capitalize }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+    </div>
+  {% endform %}
+</localization-form>
+
+<script>
+class LocalizationForm extends HTMLElement {
+  constructor() {
+    super();
+    this.elements = {
+      input: this.querySelector('input[name="language_code"]'),
+      button: this.querySelector('.disclosure__button'),
+      panel: this.querySelector('.disclosure__list'),
+    };
+
+    // Ensure the button and panel exist before adding event listeners
+    if (this.elements.button) {
+      this.elements.button.addEventListener('click', this.openSelector.bind(this));
+      this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+    }
+
+    // Add event listener to language choice items
+    this.querySelectorAll('.onlyLanguageSelctorChoice a').forEach(item => {
+      item.addEventListener('click', this.onItemClick.bind(this));
+    });
+
+    // Keyup event listener for closing the panel
+    this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+  }
+
+  hidePanel() {
+    
+    if (this.elements.button) {
+      this.elements.button.setAttribute('aria-expanded', 'false');
+    }
+    if (this.elements.panel) {
+      this.elements.panel.setAttribute('hidden', true);
+    }
+  }
+
+  onContainerKeyUp(event) {
+    if (event.code.toUpperCase() !== 'ESCAPE') return;
+    this.hidePanel();
+    if (this.elements.button) {
+      this.elements.button.focus();
+    }
+  }
+
+  onItemClick(event) {
+    event.preventDefault();
+    const form = this.querySelector('form');
+    if (this.elements.input) {
+      this.elements.input.value = event.currentTarget.dataset.value;
+    }
+    if (form) form.submit();
+  }
+
+  openSelector() {
+
+    if (this.elements.button && this.elements.panel) {
+      // Check current aria-expanded state
+      const isExpanded = this.elements.button.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        this.hidePanel();  // If it's already open, close it
+      } else {
+        this.elements.panel.removeAttribute('hidden'); // Open the panel
+        this.elements.button.setAttribute('aria-expanded', 'true'); // Set aria-expanded to true
+      }
+    }
+  }
+
+  closeSelector(event) {
+    const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+    if (event.relatedTarget === null || shouldClose) {
+      this.hidePanel();
+    }
+  }
+}
+
+if (!customElements.get('localization-form')) {
+  customElements.define('localization-form', LocalizationForm);
+}
+
+</script>
+
+{% schema %}
+  {
+    "name": "Language Selctor",
+    "target": "body",
+    "class": "sa_langSelctor_popup",
+    
+    "settings": [
+        {
+      "type": "color",
+      "id": "Only_lng_background_Color",
+      "label": "Button Background Color",
+      "default": "#007BFF"
+    },
+    {
+      "type": "color",
+      "id": "Only_lng_text_Color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    }
+    ,
+    {
+      "type": "color",
+      "id": "only_lng_dropdown_background_color",
+      "label": "Language List Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "only_lng_dropdown_text_color",
+      "label": "Language List text Color",
+      "default": "#000000"
+    }
+      
+    ]
+  }
+{% endschema %}

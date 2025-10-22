@@ -1,0 +1,246 @@
+{{ block.settings.template | append: '.css' | asset_url | stylesheet_tag }}
+{% render 'popup_1' %}
+{% schema %}
+  {
+    "name": "Market-ease",
+    "target": "body",
+    "class": "sa_gm_shopify_app_block",
+    
+    "settings": [
+      // {
+      //   "type": "header",
+      //   "content": "Popup shows to visitor from incorrect market/store"
+      // },
+     
+      {
+        "type": "select",
+        "id": "template",
+        "label": "Select Template",
+        "options": [
+          {
+            "value": "custom-1",
+            "label": "ListMagnet-1"
+          },
+          {
+            "value": "popup-1",
+            "label": "ListMagnet-2"
+          },
+          // {
+          //   "value": "popup-2",
+          //   "label": "ListMagnet-3"
+          // },
+          // {
+          //   "value": "popup-3",
+          //   "label": "ListMagnet-4"
+          // },
+          {
+            "value": "popup-4",
+            "label": "ListMagnet-3"
+          },
+          {
+            "value": "popup-6",
+            "label": "ListMagnet-4"
+          },
+                ],
+        "default": "custom-1"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "title_text",
+        "label": "Heading Text",
+        "default": "Are you in the right place?"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_popup_existing_country",
+        "label": "Hide Popup in Correct Country",
+        "default": false
+      },
+      {"label": "Cookie Timing","id": "Cookie_timmer_setting","type": "number","default": 30},
+      {
+        "type": "checkbox",
+        "id": "close_btn_show",
+        "label": "Show Close Button",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "currency_symbol_meta",
+        "label": "Show Currency symbol",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "currency_code_meta",
+        "label": "Show Currency Code",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "laguage_name_popup",
+        "label": "Show Language Code",
+        "default": true
+      },
+      // {
+      //   "type": "checkbox",
+      //   "id": "laguage_iso_code_popup",
+      //   "label": "Show/Hide Laguage Code",
+      //   "default": true
+      // },
+      {
+        "type": "checkbox",
+        "id": "country_laguage_popup",
+        "label": "Show Language",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Message"
+      },
+      
+       {
+        "type": "inline_richtext",
+        "id": "message_text",
+        "label": "Message Text",
+        "default": "Please select your currency and language preference for a better shopping experience."
+      },
+        {
+        "type": "inline_richtext",
+        "id": "confirm_button_text",
+        "label": "Button Text",
+        "default": "Go"
+      },
+        {
+        "type": "header",
+        "content": "Header Image"
+      },
+        {
+        "type": "checkbox",
+        "id": "image_header",
+        "label": "Enabled",
+        "default": false
+      },
+       {
+        "type": "image_picker",
+        "id": "image_header_file",
+        "label": "Upload Image"
+      },
+        {
+        "type": "header",
+        "content": "Popup Setting"
+      },
+        {
+        "type": "range",
+        "id": "title_text_size",
+        "min": 10,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Heading Text Size",
+        "default": 28
+      },
+      //   {
+      //   "type": "range",
+      //   "id": "message_text_size",
+      //   "min": 8,
+      //   "max": 42,
+      //   "step": 1,
+      //   "unit": "px",
+      //   "label": "Text Size",
+      //   "default": 16
+      // },
+        {
+        "type": "range",
+        "id": "width_container",
+        "min": 27,
+        "max": 100,
+        "step": 1,
+        "unit": "rem",
+        "label": "Popup Width",
+        "default": 48
+      },
+       {
+        "type": "range",
+        "id": "border_radius_container",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Popup Border Radius",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "title_font_size",
+        "min": 10,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "label": "Text Size",
+        "default": 14
+      },
+      //  {
+      //   "type": "range",
+      //   "id": "image_size_header",
+      //   "min": 20,
+      //   "max": 100,
+      //   "step": 2,
+      //   "unit": "%",
+      //   "label": "Image Size",
+      //   "default": 20
+      // }
+      {
+        "type": "header",
+        "content": "Confirm Button"
+      },
+        {
+        "type": "range",
+        "id": "confirm_button_text_size",
+        "min": 10,
+        "max": 42,
+        "step": 1,
+        "unit": "px",
+        "label": "Button Text Size",
+        "default": 16
+      },
+    
+        {
+        "type": "color",
+        "id": "background_color_container",
+        "label": "Background-color",
+        "default": "#FFFFFF"
+      },
+        {
+        "type": "color",
+        "id": "title_font_color",
+        "label": "Font Color",
+        "default": "#000000"
+      },
+       {
+        "type": "color",
+        "id": "confirm_button_bg_color",
+        "label": "Intereactive Element color",
+        "default": "#238AF7"
+      },
+       {
+        "type": "color",
+        "id": "confirm_button_text_color",
+        "label": "Button Text color",
+        "default": "#FFFFFF"
+      },
+        {
+        "type": "color",
+        "id": "close_icon_font_color",
+        "label": "Close Icon",
+        "default": "#000000"
+      },
+       {
+        "type": "textarea",
+        "id": "custom_css",
+        "label": "Custom CSS",
+        "default": "/* Add your custom CSS here */\n\n.custom-element {\n  background-color: #fff;\n  color: #333;\n}",
+        "info": "Enter your custom CSS code here."
+      }
+    ]
+  }
+{% endschema %}

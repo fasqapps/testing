@@ -1,0 +1,249 @@
+<link rel="stylesheet" href="{{ 'marketSelector.css' | asset_url }}">
+<script src="{{ 'marketSelector.js' | asset_url }}" async></script>
+<style>
+  {{ block.settings.custom_selector_css | strip_newlines | escape }}
+</style>
+
+<input
+  type="hidden"
+  id="metafeildurl"
+  name="metafeildurl"
+  value="{{ shop.metafields.incovo.ztore_glob }}"
+>
+<span class="hiddden market_data_Presence_selector" data-value="{{ shop.metafields.incovo.ZoisMarketEnambled }}"></span>
+
+<div class="selector_app_container">
+  {% if block.settings.zeom_country_selector %}
+    <div
+      class="zeom_dropdown"
+      id="zeom_dropdown"
+      style="background-color: {{ block.settings.Selector_background_Color }}"
+      >
+      <img
+        src="{{ localization.country | image_url }}"
+        class="zeom_dropbtn"
+        id="zeom_blockSelectorID"
+        alt="Flag Image"
+        width="32"
+        height="32"
+        loading="lazy"
+        style="cursor:pointer;"
+      >
+      {% if block.settings.zeom_country_code %}
+        <span class="zeom_country_code" style="color: {{ block.settings.Country_text_Color }};">
+          {{- localization.country.iso_code -}}
+        </span>
+      {% endif %}
+
+      {% if block.settings.zeom_currency_symbol %}
+        <span class="zeom_currency_symbol" style="color: {{ block.settings.Country_text_Color }};"
+          >({{ localization.country.currency.symbol }})</span
+        >
+      {% endif %}
+
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        class="icon icon-dropdown"
+        viewBox="0 0 10 6"
+        style="color: {{ block.settings.Country_text_Color }};"
+      >
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+        </path>
+      </svg>
+
+      <span class="zowwShowPopupBtnText hidden">{{ block.settings.zowwShowPopupBtn }}</span>
+
+      <div
+        class="zeom_dropdown_content"
+        id="zeom_dropdownContent"
+        style="background-color: {{ block.settings.dropdown_background_color }};"
+      >
+      <input type="text" id="selector_countrySearchBar" placeholder="Search for a country..." style="width: 100%; border:none; padding: 10px; box-sizing: border-box; background-color: {{ block.settings.dropdown_background_color }}; color: {{ block.settings.dropdown_font_color }};">
+        {% for country in localization.available_countries %}
+          <a
+            tabindex="-1"
+            value="{{ country.iso_code }}"
+            style="color: {{ block.settings.dropdown_font_color }}; cursor: pointer;"
+            onmouseover="this.style.color='{{ block.settings.dropdown_hover_color }}'"
+            onmouseout="this.style.color='{{ block.settings.dropdown_font_color }}'"
+          >
+            {% if country.iso_code == 'AC' or country.iso_code == 'TA' %}
+              <img src="{{ 'zowwselectoracta.png' | asset_url }}" alt="Alt Text" height="25" width="25" loading="lazy">
+              {% if block.settings.zeom_currency_setting_code %}
+                <span class="dropdown_currency_code"> {{ country.currency.iso_code }}</span> |
+              {% endif %}
+              {% if block.settings.zeom_currency_symbol %}
+                <span class="dropdown_currency_symbol">({{ country.currency.symbol }})</span>
+              {% endif %}
+              {% if block.settings.zeom_country_name %}
+                <span class="zeom_countryNameDropMenu">{{ country.name }}</span>
+              {% endif %}
+            {% else %}
+              {{ country | image_url: width: 25 | image_tag }}
+              {% if block.settings.zeom_currency_setting_code %}
+                <span class="dropdown_currency_code"> {{ country.currency.iso_code }}</span> |
+              {% endif %}
+              
+              {% if block.settings.zeom_currency_symbol %}
+                <span class="dropdown_currency_symbol">({{ country.currency.symbol }})</span>
+              {% endif %}
+              {% if block.settings.zeom_country_name %}
+                <span class="zeom_countryNameDropMenu">{{ country.name }}</span>
+              {% endif %}
+              
+            {% endif %}
+            {% if section.settings.show_currency %}
+              ({{ country.currency.iso_code }}
+              {{ country.currency.symbol }})
+            {% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  {{ settings.zeom_lan_selector }}
+  <localization-form class="lng_form">
+    {% form 'localization' %}
+      <button
+        id="customLanguageSelectorBtn"
+        type="button"
+        class="border"
+        tabindex="-1"
+        onclick="rotateIconLng()"
+        style="background-color: {{ block.settings.Selector_background_Color }}; color: {{ block.settings.Country_text_Color }};"
+      >
+        {% if block.settings.selctor_lang_name %}
+          {{ localization.language.endonym_name | capitalize }}
+        {% else %}
+          {{ localization.language.iso_code | capitalize }}
+        {% endif %}
+
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-lng" viewBox="0 0 10 6">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+        </svg>
+      </button>
+      <ul
+        id="customSelectorlanguageList"
+        role="list"
+        style="display: none; background-color: {{ block.settings.dropdown_background_color }};"
+      >
+        {% for language in localization.available_languages %}
+          <li class="disclosure__item customSelectorlanguageChoice" tabindex="-1">
+            <a
+              href="#"
+              {% if language.iso_code == localization.language.iso_code %}
+                class="slectorChoice" style="cursor: pointer;" aria-current="true"
+              {% endif %}
+              hreflang="{{ language.iso_code }}"
+              lang="{{ language.iso_code }}"
+              data-value="{{ language.iso_code }}"
+              style="color: {{ block.settings.dropdown_font_color }};"
+              onmouseover="this.style.color='{{ block.settings.dropdown_hover_color }}'"
+              onmouseout="this.style.color='{{ block.settings.dropdown_font_color }}'"
+            >
+              {% if block.settings.selctor_lang_name %}
+                {{ language.endonym_name | capitalize }}
+              {% else %}
+                {{ language.iso_code | capitalize }}
+              {% endif %}
+            </a>
+          </li>
+        {% endfor %}
+        <li class="hidden lng_isShow">{{ block.settings.zeom_lan_selector }}</li>
+      </ul>
+      <input type="hidden" id="Zeom_sa_language_code" name="language_code" value="{{ localization.language.iso_code }}">
+    {% endform %}
+  </localization-form>
+</div>
+
+{% schema %}
+{
+  "name": "Market/language Selector",
+  "target": "section",
+  "class": "zeom_shopify_app_section",
+  
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "zowwShowPopupBtn",
+      "label": "Show Popup from Selector",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "zeom_country_selector",
+      "label": "Show Country Selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "zeom_lan_selector",
+      "label": "Show Language Selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "zeom_country_code",
+      "label": "Show Country Code",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "zeom_currency_symbol",
+      "label": "Show Country Currency Symbol",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "selctor_lang_name",
+      "label": "Show Language Code",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "zeom_country_name",
+      "label": "Show Country Name Dropdown",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "zeom_currency_setting_code",
+      "label": "Show Currency Code Dropdown",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "Selector_background_Color",
+      "label": "Selector Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "Country_text_Color",
+      "label": "Selector Font Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_background_color",
+      "label": "Dropdown Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_font_color",
+      "label": "Dropdown Font Color",
+      "default": "#000000"
+    },
+
+    {
+      "type": "color",
+      "id": "dropdown_hover_color",
+      "label": "Dropdown Hover Color",
+      "default": "#f1f1f1"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,592 @@
+let zeomCountryButton2;
+document.addEventListener('DOMContentLoaded', () => {
+  let zeomCountryButton = document.querySelector('.saCountryList');
+  zeomCountryButton2 = document.querySelector('.saCountryList');
+  let zeomLanguageButton = document.querySelector('.saLanguageList');
+  let countryDropdown = document.querySelector('.saCountry--item');
+  let languageDropdown = document.querySelector('.saLanguage--item');
+  const saModelOverlay = document.querySelector('#sa-modal-country');
+  const saCloseIcon = document.querySelector('#sa-modal-close-icon');
+  let saMarketFormSubmitButton = document.getElementById('primaryMarketCard_0008_submit');
+  const correctCountry = document.querySelector('.hide_popup_correct_country');
+  const correctCountryvalue = correctCountry.getAttribute('data-value');
+  const popupcountrySearchBar = document.getElementById('popup_countrySearchBar');
+  const sixith_template = document.querySelector('.sixth_template_popup');
+  const sa_popup_container = document.querySelector('.sa-popup');
+  const sixith_template_data_value = sixith_template.getAttribute('data-value');
+  // const newCountry_popup_div = document.querySelector('.newCountry_popup');
+  const chnge_country_newPopup_Btn = document.querySelector('.chnge_country_newPopup');
+
+
+  // Select the element
+
+
+
+  popupcountrySearchBar.addEventListener('input', function () {
+    const popupfilter = this.value.toLowerCase();
+    const popuplistItems = document.querySelectorAll('.dropdown-content li');
+    popuplistItems.forEach(function (item) {
+      const popupcountryName = item.textContent || item.innerText;
+      // Display item if the country name includes the filter text
+      if (popupcountryName.toLowerCase().includes(popupfilter)) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+  popupcountrySearchBar.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+  const correctCountryBollean = correctCountryvalue === 'true';
+  const cookiesCloseTiming = document.getElementsByClassName('sa_cookies_timing_expand');
+  var firstElement = cookiesCloseTiming[0];
+  var cookiesCloseTimingValue = firstElement.getAttribute('data-value');
+  var cookiesCloseTimingValuenumber = +cookiesCloseTimingValue;
+  function toggleDropdown(dropdownContent) {
+    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+  }
+  zeomCountryButton.addEventListener('click', function () {
+    if (sixith_template_data_value == 'popup-5') {
+      saModelOverlay.style.display = 'none';
+      createCookie({
+        name: 'saClose',
+        value: 'popUpClose',
+        minutes: cookiesCloseTimingValuenumber,
+      });
+    }
+    toggleDropdown(countryDropdown);
+    zeomCountryButton.classList.toggle('rotated');
+    zeomLanguageButton.classList.remove('rotated');
+    languageDropdown.style.display = 'none';
+  });
+  document.querySelector('.saCountryList').addEventListener('click', function (event) {
+    // Prevent the click event from propagating to the parent button
+    event.stopPropagation();
+  });
+  zeomLanguageButton.addEventListener('click', function () {
+    toggleDropdown(languageDropdown);
+    zeomCountryButton.classList.remove('rotated');
+    zeomLanguageButton.classList.toggle('rotated');
+    // Close the country dropdown if open
+    countryDropdown.style.display = 'none';
+  });
+  window.addEventListener('click', function (event) {
+    if (!event.target.matches('.saCountryList') && !event.target.matches('.saLanguageList')) {
+      countryDropdown.style.display = 'none';
+      languageDropdown.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('.saCountry--item li').forEach(function (item) {
+    item.addEventListener('click', function (event) {
+      event.preventDefault();
+      zeomCountryButton.classList.remove('rotated');
+      let trimmedText = item.textContent.trim().replace(/\s+/g, ' ');
+      let displayText = trimmedText.length > 15 ? trimmedText.slice(0, 15) + '...' : trimmedText;
+      zeomCountryButton.innerHTML = `<span style="margin-right:8px;"><img src="${item.querySelector('img').src
+        }" class="zeom_dropbtn" alt="Flag Image" width="25" height="25" loading="lazy"></span><span>${displayText}</span>`;
+      zeomCountryButton.value = item.dataset.value;
+      document.querySelectorAll('.saCountry--item li').forEach(function (otherItem) {
+        otherItem.classList.remove('active');
+      });
+      item.classList.add('active');
+      countryDropdown.style.display = 'none';
+    });
+  });
+  document.querySelectorAll('.saLanguage--item li').forEach(function (item) {
+    item.addEventListener('click', function (event) {
+      zeomLanguageButton.classList.remove('rotated');
+      event.preventDefault();
+      zeomLanguageButton.innerText = item.textContent.trim();
+      zeomLanguageButton.value = item.dataset.value;
+      document.querySelectorAll('.saLanguage--item li').forEach(function (otherItem) {
+        otherItem.classList.remove('active');
+      });
+      item.classList.add('active');
+      languageDropdown.style.display = 'none';
+    });
+  });
+  // if (sixith_template_data_value == 'popup-5') {
+  zeomCountryButton.innerHTML = `<span style="font-size:larger" data-value="{{ localization.country.iso_code }}">
+            {% if localization.country.iso_code == 'AC' or localization.country.iso_code == 'TA' %}
+            Stay in {{ localization.country.name }}{% if block.settings.currency_symbol_meta %}
+    ({{ localization.country.currency.symbol }})
+  {% endif %}
+            {% else %}
+            <span id="CountryNameText"> Stay in {{ localization.country.name }}  {% if block.settings.currency_symbol_meta %}
+    ({{ localization.country.currency.symbol }})
+  {% endif %} <span/>
+            {% endif %}
+        </span>`;
+  // } 
+
+  zeomCountryButton.innerHTML = zeommmmmmContent;
+
+  zeomCountryButton.value = '{{ localization.country.iso_code }}';
+  const liElements = document.querySelectorAll('.saCountry--item li');
+  const liDataArray = [];
+  liElements.forEach((li) => {
+    const dataValue = li.getAttribute('data-value');
+    const imgSrc = li.querySelector('img') ? li.querySelector('img').getAttribute('src') : null;
+    // const altText = li.querySelector('img') ? li.querySelector('img').getAttribute('alt') : null;
+    const countryName = li.innerText.trim();
+    const liData = {
+      dataValue: dataValue,
+      imgSrc: imgSrc,
+      countryName: countryName,
+    };
+    liDataArray.push(liData);
+  });
+  fetch('https://api.country.is/')
+    .then((response) => response.json())
+    .then((data) => {
+      function updateDropdown() {
+        var landingCountry = document.querySelector('.landingCountry').getAttribute('value');
+        var currentIsoCode = landingCountry;
+        var dropdownItems = document.querySelectorAll('.saCountry--item li');
+        dropdownItems.forEach(function (item) {
+          var countryCode = item.getAttribute('data-value');
+          var marketName = item.getAttribute('zeom-market');
+          if (countryCode === currentIsoCode) {
+            updateDropdownFetching(marketName);
+          }
+        });
+      }
+      function updateDropdownFetching(marketNameParm) {
+        var currentIsoCode = data.country;
+        var dropdownItems = document.querySelectorAll('.saCountry--item li');
+        dropdownItems.forEach(function (item) {
+          var countryCode = item.getAttribute('data-value');
+          var marketName = item.getAttribute('zeom-market');
+          if (correctCountryBollean) {
+            saModelOverlay.style.display = 'none';
+            if (countryCode === currentIsoCode) {
+              if (marketNameParm != 'donoterasezone-zowwmarket') {
+                if (marketNameParm === marketName) {
+                  saModelOverlay.style.display = 'none';
+                  createCookie({
+                    name: 'saClose',
+                    value: 'popUpClose',
+                    minutes: cookiesCloseTimingValuenumber,
+                  });
+                }
+              }
+            }
+          }
+          zappidFnc();
+        });
+      }
+      updateDropdown();
+      let targetCountryCode = data.country;
+      const countryNameNot = countrydata[targetCountryCode]?.country;
+      // processTargetCountryCode(targetCountryCode)
+      const matchingCountryData = liDataArray.find((liData) => liData.dataValue === targetCountryCode);
+      if (matchingCountryData) {
+        const initialCountryName = matchingCountryData.countryName;
+        const initialCountryImageSrc = matchingCountryData.imgSrc;
+        const countryNameElement = document.getElementById('CountryNameText');
+        zeomCountryButton2.value = targetCountryCode;
+
+        if (countryNameElement) {
+          if (sixith_template_data_value == 'popup-5') {
+            countryNameElement.textContent = 'Stay in ' + initialCountryName;
+          } else {
+            countryNameElement.textContent = initialCountryName;
+          }
+        }
+        const countryImageElement = document.getElementById('zeom_DropDownID');
+        const headCountryImg = document.getElementsByClassName('popup-flag-img');
+        if (countryImageElement) {
+          countryImageElement.src = initialCountryImageSrc;
+        }
+        if (headCountryImg.length > 0) {
+          headCountryImg[0].src = initialCountryImageSrc;
+          const doNotShipDiv = document.querySelector('.do_not_ship_country');
+          doNotShipDiv.textContent = `We do ship to ${countryNameNot}`;
+          doNotShipDiv.style.color = 'green';
+        }
+      } else {
+        const doNotShipDiv = document.querySelector('.do_not_ship_country');
+        document.querySelector('.head-img-popup').style.display = 'none';
+        doNotShipDiv.textContent = `We do not ship to ${countryNameNot}`;
+        doNotShipDiv.style.color = 'red';
+        const targetCountryCodeSmall = targetCountryCode.trim().toLowerCase();
+        const imgVariable = targetCountryCodeSmall + '.png';
+        var imgElement = document.createElement('img');
+        imgElement.setAttribute('src', `https://cdn.shopify.com/s/files/1/0831/6921/4768/files/${imgVariable}`);
+        imgElement.setAttribute('alt', 'Alt Text');
+        imgElement.setAttribute('height', '30');
+        imgElement.setAttribute('width', '40');
+        imgElement.setAttribute('loading', 'lazy');
+        var containerDiv = document.querySelector('.do-not-ship-flag');
+        containerDiv.appendChild(imgElement);
+      }
+    })
+    .catch((error) => { });
+  const lenlen = document.getElementsByClassName('lanlan');
+  zeomLanguageButton.value = '{{ localization.language.iso_code }}';
+  let myzeomobjtincovo = document.querySelector('#zeomobjtincovo');
+  const inputStringMetafeild = myzeomobjtincovo.value;
+
+  const inputStringMetafeildregex = /(\w+):([^,]+)(?=[^}]*})/g;
+  const inputStringMetafeildresult = {};
+  for (const match of inputStringMetafeild.matchAll(inputStringMetafeildregex)) {
+    const [_, key, value] = match;
+    inputStringMetafeildresult[key] = value;
+  }
+  function processTargetCountryCode(countryCode) {
+    for (let i in inputStringMetafeildresult) {
+      if (inputStringMetafeildresult[i] == window.location.href) {
+        // saModelOverlay.style.display = "none";
+      }
+    }
+  }
+  if (sixith_template_data_value != 'popup-5') {
+    const ulElement = document.getElementById('data-id');
+    const liElements1 = document.querySelectorAll('.newcountry-li-list');
+    for (let countryCode in inputStringMetafeildresult) {
+      if (countrydata[countryCode]) {
+        let liElement = document.createElement('li');
+        liElement.setAttribute('value', countryCode);
+        liElement.addEventListener('click', function (event) {
+          event.preventDefault();
+          zeomCountryButton.classList.remove('rotated');
+          country_rules_code = liElement.getAttribute('value');
+          let trimmedText = liElement.textContent.trim().replace(/\s+/g, ' ');
+          let displayText = trimmedText.length > 15 ? trimmedText.slice(0, 15) + '...' : trimmedText;
+          const imageUrl1 = `https://cdn.shopify.com/s/files/1/0576/0178/5918/files/${country_rules_code.toLowerCase()}.png`;
+          zeomCountryButton.innerHTML = `
+    <img src="${imageUrl1}" alt="Alt Text" height="25" width="25" loading="lazy" style="margin-right: 12px;">
+    <span style="margin-right: 8px;">${displayText}</span>`;
+          zeomCountryButton.value = country_rules_code;
+          document.querySelectorAll('.saCountry--item li').forEach(function (otherItem) {
+            otherItem.classList.remove('active');
+          });
+          liElement.classList.add('active');
+          countryDropdown.style.display = 'none';
+        });
+        let imgElement = document.createElement('img');
+        // Construct the image URL using country code
+        const imageUrl = `https://cdn.shopify.com/s/files/1/0576/0178/5918/files/${countryCode.toLowerCase()}.png`;
+        imgElement.src = imageUrl;
+        imgElement.alt = countrydata[countryCode].country; // Alt text for accessibility
+        imgElement.style.width = '25px'; // Adjust size as needed
+        imgElement.style.height = 'auto'; // Maintain aspect ratio
+        liElement.textContent = countrydata[countryCode].country;
+        liElement.insertBefore(imgElement, liElement.firstChild);
+        ulElement.appendChild(liElement);
+      }
+    }
+    const validCountryCodes = new Set(Object.keys(inputStringMetafeildresult));
+    for (let li of liElements1) {
+      const dataValue = li.getAttribute('data-value');
+      if (validCountryCodes.has(dataValue)) {
+        li.style.display = 'none';
+      }
+    }
+  }
+  let newUrl;
+  if (saMarketFormSubmitButton !== null) {
+    saMarketFormSubmitButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      let saMarketform = document.getElementById('saMarketLocalizationForm');
+      let countryCodeInput = document.getElementById('sa_country_code');
+      let languageCodeInput = document.getElementById('sa_language_code');
+      let countryCode = zeomCountryButton.value;
+      let languageCode = zeomLanguageButton.value;
+      const redirectURL = inputStringMetafeildresult[countryCode];
+      if (redirectURL) {
+        newUrl = new URL(redirectURL);
+        let newUrl2 = new URL(redirectURL + '?zappid=1');
+        window.location.href = newUrl2;
+      } else {
+        document.getElementById('return_to').value = window.location.pathname + "?zappid=1";
+        countryCodeInput.value = countryCode;
+        languageCodeInput.value = languageCode;
+        saMarketform.submit();
+      }
+    });
+  }
+  const url12 = window.location.href;
+  const match12 = url12.match(/\.com\/([^\/-]*)-/); // Match the part between .com and the first hyphen
+  const getCookieValue = (name) => document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`)?.pop() || '';
+  const createCookie = ({ name, value, minutes, path = '/' }) => {
+    const date = new Date();
+    date.setTime(date.getTime() + minutes * 60 * 1000);
+    const expires = `expires=${date.toUTCString()}`;
+    document.cookie = `${name}=${value};${expires};path=${path}`;
+  };
+  const hidePopup = () => {
+    saModelOverlay.style.display = 'none';
+  };
+  const showPopup = () => {
+    saModelOverlay.style.display = 'block';
+  };
+  const handleSubmitClick = (event) => {
+    event.preventDefault();
+    const saSelectedCountry = zeomCountryButton.value.toLowerCase();
+    const saSelectedLanguage = zeomLanguageButton.value;
+    createCookie({
+      name: 'saMarketLocale',
+      value: `${saSelectedLanguage}-${saSelectedCountry}`,
+      minutes: 30,
+    });
+    createCookie({
+      name: 'saGo',
+      value: `${saSelectedCountry}`,
+      minutes: cookiesCloseTimingValuenumber,
+    });
+    hidePopup();
+  };
+  saMarketFormSubmitButton.addEventListener('click', handleSubmitClick);
+  saCloseIcon.addEventListener('click', () => {
+    createCookie({
+      name: 'saClose',
+      value: 'popUpClose',
+      minutes: cookiesCloseTimingValuenumber,
+    });
+    hidePopup();
+  });
+  const zappidFnc = () => {
+    const params = new URLSearchParams(window.location.search);
+    const isZParamExists = params.get('zappid') === '1';
+    const saGoCookie = getCookieValue('saGo') === 'saGoPopup';
+    const saMarketLocaleCookie = getCookieValue('saMarketLocale');
+    if (isZParamExists) {
+      createCookie({
+        name: 'saGo',
+        value: 'saGoPopup',
+        minutes: 30,
+      });
+      hidePopup();
+      setTimeout(() => {
+        let finalUrl = window.location.href;
+        let newUrl = finalUrl.replace('?zappid=1', '');
+        window.location.href = newUrl;
+      }, 300000);
+    } else if (saGoCookie) {
+      hidePopup();
+    } else if (!saMarketLocaleCookie && getCookieValue('saClose') !== 'popUpClose') {
+      showPopup();
+    } else {
+      hidePopup();
+    }
+  };
+});
+
+const listItems = document.querySelectorAll('.dropdown-content .newcountry-li-list');
+listItems.forEach((item) => {
+  const countryCode = item.getAttribute('data-value');
+  if (countrydata[countryCode]) {
+    const english_country_text = item.querySelector('.country-name-english');
+    if (english_country_text) {
+      english_country_text.textContent = countrydata[countryCode].country;
+    }
+  }
+});
+const listItems2 = document.querySelectorAll('.newcountry-li-list2');
+listItems2.forEach((item) => {
+  const countryCode = item.getAttribute('data-value');
+
+  if (countrydata[countryCode]) {
+    const english_country_text = item.querySelector('.country-name-english');
+    if (english_country_text) {
+      english_country_text.textContent = countrydata[countryCode].country;
+    }
+  }
+});
+
+
+const countrydata = {
+  AF: { country: 'Afghanistan', region: 'Asia' },
+  AL: { country: 'Albania', region: 'Europe' },
+  DZ: { country: 'Algeria', region: 'Africa' },
+  AD: { country: 'Andorra', region: 'Europe' },
+  AO: { country: 'Angola', region: 'Africa' },
+  AG: { country: 'Antigua and Barbuda', region: 'North America' },
+  AR: { country: 'Argentina', region: 'South America' },
+  AM: { country: 'Armenia', region: 'Asia' },
+  AU: { country: 'Australia', region: 'Oceania' },
+  AT: { country: 'Austria', region: 'Europe' },
+  AZ: { country: 'Azerbaijan', region: 'Asia' },
+  BS: { country: 'Bahamas', region: 'North America' },
+  BH: { country: 'Bahrain', region: 'Asia' },
+  BD: { country: 'Bangladesh', region: 'Asia' },
+  BB: { country: 'Barbados', region: 'North America' },
+  BY: { country: 'Belarus', region: 'Europe' },
+  BE: { country: 'Belgium', region: 'Europe' },
+  BZ: { country: 'Belize', region: 'Central America' },
+  BJ: { country: 'Benin', region: 'Africa' },
+  BT: { country: 'Bhutan', region: 'Asia' },
+  BO: { country: 'Bolivia (Plurinational State of)', region: 'South America' },
+  BA: { country: 'Bosnia and Herzegovina', region: 'Europe' },
+  BW: { country: 'Botswana', region: 'Africa' },
+  BR: { country: 'Brazil', region: 'South America' },
+  BN: { country: 'Brunei Darussalam', region: 'Asia' },
+  BG: { country: 'Bulgaria', region: 'Europe' },
+  BF: { country: 'Burkina Faso', region: 'Africa' },
+  BI: { country: 'Burundi', region: 'Africa' },
+  CV: { country: 'Cabo Verde', region: 'Africa' },
+  KH: { country: 'Cambodia', region: 'Asia' },
+  CM: { country: 'Cameroon', region: 'Africa' },
+  CA: { country: 'Canada', region: 'North America' },
+  CF: { country: 'Central African Republic', region: 'Africa' },
+  TD: { country: 'Chad', region: 'Africa' },
+  CL: { country: 'Chile', region: 'South America' },
+  CN: { country: 'China', region: 'Asia' },
+  CO: { country: 'Colombia', region: 'South America' },
+  KM: { country: 'Comoros', region: 'Africa' },
+  CG: { country: 'Congo', region: 'Africa' },
+  CD: { country: 'Congo (Democratic Republic of the)', region: 'Africa' },
+  CR: { country: 'Costa Rica', region: 'North America' },
+  HR: { country: 'Croatia', region: 'Europe' },
+  CU: { country: 'Cuba', region: 'North America' },
+  CY: { country: 'Cyprus', region: 'Europe' },
+  CZ: { country: 'Czechia', region: 'Europe' },
+  CI: { country: "Côte d'Ivoire", region: 'Africa' },
+  DK: { country: 'Denmark', region: 'Europe' },
+  DJ: { country: 'Djibouti', region: 'Africa' },
+  DM: { country: 'Dominica', region: 'North America' },
+  DO: { country: 'Dominican Republic', region: 'North America' },
+  EC: { country: 'Ecuador', region: 'South America' },
+  EG: { country: 'Egypt', region: 'Africa' },
+  SV: { country: 'El Salvador', region: 'North America' },
+  GQ: { country: 'Equatorial Guinea', region: 'Africa' },
+  ER: { country: 'Eritrea', region: 'Africa' },
+  EE: { country: 'Estonia', region: 'Europe' },
+  SZ: { country: 'Eswatini', region: 'Africa' },
+  ET: { country: 'Ethiopia', region: 'Africa' },
+  FJ: { country: 'Fiji', region: 'Oceania' },
+  FI: { country: 'Finland', region: 'Europe' },
+  FR: { country: 'France', region: 'Europe' },
+  GA: { country: 'Gabon', region: 'Africa' },
+  GM: { country: 'Gambia', region: 'Africa' },
+  GE: { country: 'Georgia', region: 'Asia' },
+  DE: { country: 'Germany', region: 'Europe' },
+  GH: { country: 'Ghana', region: 'Africa' },
+  GR: { country: 'Greece', region: 'Europe' },
+  GD: { country: 'Grenada', region: 'North America' },
+  GT: { country: 'Guatemala', region: 'North America' },
+  GN: { country: 'Guinea', region: 'Africa' },
+  GW: { country: 'Guinea-Bissau', region: 'Africa' },
+  GY: { country: 'Guyana', region: 'South America' },
+  HT: { country: 'Haiti', region: 'North America' },
+  HN: { country: 'Honduras', region: 'North America' },
+  HU: { country: 'Hungary', region: 'Europe' },
+  IS: { country: 'Iceland', region: 'Europe' },
+  IN: { country: 'India', region: 'Asia' },
+  ID: { country: 'Indonesia', region: 'Asia' },
+  IR: { country: 'Iran (Islamic Republic of)', region: 'Asia' },
+  IQ: { country: 'Iraq', region: 'Asia' },
+  IE: { country: 'Ireland', region: 'Europe' },
+  IL: { country: 'Israel', region: 'Asia' },
+  IT: { country: 'Italy', region: 'Europe' },
+  JM: { country: 'Jamaica', region: 'North America' },
+  JP: { country: 'Japan', region: 'Asia' },
+  JO: { country: 'Jordan', region: 'Asia' },
+  KZ: { country: 'Kazakhstan', region: 'Asia' },
+  KE: { country: 'Kenya', region: 'Africa' },
+  KI: { country: 'Kiribati', region: 'Oceania' },
+  KW: { country: 'Kuwait', region: 'Asia' },
+  KG: { country: 'Kyrgyzstan', region: 'Asia' },
+  LA: { country: "Lao People's Democratic Republic", region: 'Asia' },
+  LV: { country: 'Latvia', region: 'Europe' },
+  LB: { country: 'Lebanon', region: 'Asia' },
+  LS: { country: 'Lesotho', region: 'Africa' },
+  LR: { country: 'Liberia', region: 'Africa' },
+  LY: { country: 'Libya', region: 'Africa' },
+  LI: { country: 'Liechtenstein', region: 'Europe' },
+  LT: { country: 'Lithuania', region: 'Europe' },
+  LU: { country: 'Luxembourg', region: 'Europe' },
+  MG: { country: 'Madagascar', region: 'Africa' },
+  MW: { country: 'Malawi', region: 'Africa' },
+  MY: { country: 'Malaysia', region: 'Asia' },
+  MV: { country: 'Maldives', region: 'Asia' },
+  ML: { country: 'Mali', region: 'Africa' },
+  MT: { country: 'Malta', region: 'Europe' },
+  MH: { country: 'Marshall Islands', region: 'Oceania' },
+  MR: { country: 'Mauritania', region: 'Africa' },
+  MU: { country: 'Mauritius', region: 'Africa' },
+  MX: { country: 'Mexico', region: 'North America' },
+  FM: { country: 'Micronesia (Federated States of)', region: 'Oceania' },
+  MC: { country: 'Monaco', region: 'Europe' },
+  MN: { country: 'Mongolia', region: 'Asia' },
+  ME: { country: 'Montenegro', region: 'Europe' },
+  MA: { country: 'Morocco', region: 'Africa' },
+  MZ: { country: 'Mozambique', region: 'Africa' },
+  MM: { country: 'Myanmar', region: 'Asia' },
+  NA: { country: 'Namibia', region: 'Africa' },
+  NR: { country: 'Nauru', region: 'Oceania' },
+  NP: { country: 'Nepal', region: 'Asia' },
+  NL: { country: 'Netherlands', region: 'Europe' },
+  NZ: { country: 'New Zealand', region: 'Oceania' },
+  NI: { country: 'Nicaragua', region: 'North America' },
+  NE: { country: 'Niger', region: 'Africa' },
+  NG: { country: 'Nigeria', region: 'Africa' },
+  MK: { country: 'North Macedonia', region: 'Europe' },
+  NO: { country: 'Norway', region: 'Europe' },
+  OM: { country: 'Oman', region: 'Asia' },
+  PK: { country: 'Pakistan', region: 'Asia' },
+  PW: { country: 'Palau', region: 'Oceania' },
+  PS: { country: 'Palestine, State of', region: 'Asia' },
+  PA: { country: 'Panama', region: 'North America' },
+  PG: { country: 'Papua New Guinea', region: 'Oceania' },
+  PY: { country: 'Paraguay', region: 'South America' },
+  PE: { country: 'Peru', region: 'South America' },
+  PH: { country: 'Philippines', region: 'Asia' },
+  PL: { country: 'Poland', region: 'Europe' },
+  PT: { country: 'Portugal', region: 'Europe' },
+  QA: { country: 'Qatar', region: 'Asia' },
+  RO: { country: 'Romania', region: 'Europe' },
+  RU: { country: 'Russian Federation', region: 'Europe' },
+  RW: { country: 'Rwanda', region: 'Africa' },
+  KN: { country: 'Saint Kitts and Nevis', region: 'North America' },
+  LC: { country: 'Saint Lucia', region: 'North America' },
+  VC: { country: 'Saint Vincent and the Grenadines', region: 'North America' },
+  WS: { country: 'Samoa', region: 'Oceania' },
+  SM: { country: 'San Marino', region: 'Europe' },
+  ST: { country: 'Sao Tome and Principe', region: 'Africa' },
+  SA: { country: 'Saudi Arabia', region: 'Asia' },
+  SN: { country: 'Senegal', region: 'Africa' },
+  RS: { country: 'Serbia', region: 'Europe' },
+  SC: { country: 'Seychelles', region: 'Africa' },
+  SL: { country: 'Sierra Leone', region: 'Africa' },
+  SG: { country: 'Singapore', region: 'Asia' },
+  SK: { country: 'Slovakia', region: 'Europe' },
+  SI: { country: 'Slovenia', region: 'Europe' },
+  SB: { country: 'Solomon Islands', region: 'Oceania' },
+  SO: { country: 'Somalia', region: 'Africa' },
+  ZA: { country: 'South Africa', region: 'Africa' },
+  SS: { country: 'South Sudan', region: 'Africa' },
+  ES: { country: 'Spain', region: 'Europe' },
+  LK: { country: 'Sri Lanka', region: 'Asia' },
+  SD: { country: 'Sudan', region: 'Africa' },
+  SR: { country: 'Suriname', region: 'South America' },
+  SE: { country: 'Sweden', region: 'Europe' },
+  CH: { country: 'Switzerland', region: 'Europe' },
+  SY: { country: 'Syrian Arab Republic', region: 'Asia' },
+  TJ: { country: 'Tajikistan', region: 'Asia' },
+  TZ: { country: 'Tanzania, United Republic of', region: 'Africa' },
+  TH: { country: 'Thailand', region: 'Asia' },
+  TL: { country: 'Timor-Leste', region: 'Asia' },
+  TG: { country: 'Togo', region: 'Africa' },
+  TO: { country: 'Tonga', region: 'Oceania' },
+  TT: { country: 'Trinidad and Tobago', region: 'North America' },
+  TN: { country: 'Tunisia', region: 'Africa' },
+  TR: { country: 'Turkey', region: 'Europe' },
+  TM: { country: 'Turkmenistan', region: 'Asia' },
+  TV: { country: 'Tuvalu', region: 'Oceania' },
+  UG: { country: 'Uganda', region: 'Africa' },
+  UA: { country: 'Ukraine', region: 'Europe' },
+  AE: { country: 'United Arab Emirates', region: 'Asia' },
+  GB: { country: 'United Kingdom of Great Britain and Northern Ireland', region: 'Europe' },
+  US: { country: 'United States of America', region: 'North America' },
+  UY: { country: 'Uruguay', region: 'South America' },
+  UZ: { country: 'Uzbekistan', region: 'Asia' },
+  VU: { country: 'Vanuatu', region: 'Oceania' },
+  VE: { country: 'Venezuela (Bolivarian Republic of)', region: 'South America' },
+  VN: { country: 'Viet Nam', region: 'Asia' },
+  YE: { country: 'Yemen', region: 'Asia' },
+  ZM: { country: 'Zambia', region: 'Africa' },
+  ZW: { country: 'Zimbabwe', region: 'Africa' },
+};
